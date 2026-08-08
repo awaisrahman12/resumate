@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-brand-500/40 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+  }
+  .btn-ghost {
+    @apply btn bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50;
+  }
+  .input {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm shadow-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-slate-700;
+  }
+  .card {
+    @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+  }
+}
+
+/* Rendered markdown resumes */
+.prose-resume h1 { @apply text-2xl font-bold text-slate-900 mt-0 mb-1; }
+.prose-resume h2 { @apply text-lg font-semibold text-slate-900 mt-5 mb-2 border-b border-slate-200 pb-1; }
+.prose-resume h3 { @apply text-base font-semibold text-slate-800 mt-3 mb-1; }
+.prose-resume p { @apply my-2 leading-relaxed; }
+.prose-resume ul { @apply list-disc pl-5 my-2 space-y-1; }
+.prose-resume a { @apply text-brand-600 underline; }
+.prose-resume strong { @apply font-semibold text-slate-900; }
