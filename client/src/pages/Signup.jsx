@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import GoogleAuthButton from "../components/GoogleAuthButton.jsx";
 
 export default function Signup() {
   const { signup } = useAuth();
@@ -18,8 +19,15 @@ export default function Signup() {
     setBusy(true);
     const res = await signup(name, email, password);
     setBusy(false);
-    if (res.ok) navigate("/dashboard", { replace: true });
-    else setError(res.error);
+    // Email signups aren't signed in yet — they must confirm the emailed code.
+    if (res.ok) {
+      navigate("/verify-email", {
+        replace: true,
+        state: { email: res.email, message: res.message },
+      });
+    } else {
+      setError(res.error);
+    }
   }
 
   return (
@@ -31,6 +39,8 @@ export default function Signup() {
         {error && (
           <div className="mt-4 rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div>
         )}
+
+        <GoogleAuthButton onError={setError} />
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
