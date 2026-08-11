@@ -19,6 +19,10 @@ export default function CheckResume() {
       setError("Please choose a PDF file.");
       return;
     }
+    if (f.size > 4 * 1024 * 1024) {
+      setError("That PDF is over 4MB. Please upload a smaller file.");
+      return;
+    }
     setFile(f);
   }
 
@@ -74,7 +78,7 @@ export default function CheckResume() {
             <p className="mt-3 text-sm font-medium text-slate-700">
               {file ? file.name : "Drop your PDF here, or click to browse"}
             </p>
-            <p className="mt-1 text-xs text-slate-400">PDF only · max 5MB</p>
+            <p className="mt-1 text-xs text-slate-400">PDF only · max 4MB</p>
           </label>
 
           <button type="submit" className="btn-primary mt-5 w-full py-3" disabled={busy || !file}>

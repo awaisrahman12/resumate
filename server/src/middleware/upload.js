@@ -3,7 +3,7 @@ import multer from "multer";
 /**
  * Multer config for resume uploads. Files are held in memory (never written to
  * disk) so we can hand the buffer straight to pdf-parse. Only PDFs are accepted,
- * capped at 5MB.
+ * capped at 4MB (kept under Vercel's 4.5MB serverless request-body limit).
  */
 const storage = multer.memoryStorage();
 
@@ -27,5 +27,5 @@ export class PdfOnlyError extends Error {
 export const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 4 * 1024 * 1024 }, // 4MB (under Vercel's 4.5MB limit)
 });
