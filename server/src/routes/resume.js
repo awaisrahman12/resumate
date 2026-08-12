@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { generate, check, rewrite, history } from "../controllers/resumeController.js";
+import { generate, check, rewrite, history, downloadPDF } from "../controllers/resumeController.js";
 import { requireAuth } from "../middleware/auth.js";
 import { upload } from "../middleware/upload.js";
 
@@ -12,5 +12,6 @@ router.post("/generate", generate);
 router.post("/check", upload.single("resume"), check);
 router.post("/rewrite", rewrite);
 router.get("/history", history);
+router.post("/download-pdf", downloadPDF);
 
 export default router;

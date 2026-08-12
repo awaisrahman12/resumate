@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { Resume } from "../models/Resume.js";
-import { extractText } from "../services/pdf.js";
+import { extractText, generatePDF } from "../services/pdf.js";
 import { generateResume, scoreResume, rewriteResume } from "../services/ai.js";
 
 /** Derive a short title from a form or fall back to a default. */
@@ -96,4 +96,23 @@ export const history = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 })
     .limit(50);
   res.json({ resumes });
+});
+
+/** POST /api/resume/download-pdf  { content, filename } */
+export const downloadPDF = asyncHandler(async (req, res) => {
+  const { content, filename } = req.body || {};
+
+  if (!content || typeof content !== "string") {
+    return res.status(400).json({ error: "Please provide resume content." });
+  }
+
+  const pdfBuffer = await generatePDF(content);
+  const safeFilename = (filename || "resume")
+    .replace(/[^a-z0-9\-_]/gi, "-")
+    .replace(/--+/g, "-")
+    .toLowerCase();
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", `attachment; filename="${safeFilename}.pdf"`);
+  res.send(pdfBuffer);
 });
