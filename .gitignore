@@ -28,3 +28,6 @@ Thumbs.db
 
 # Uploads (in case disk storage is ever used)
 server/uploads/
+
+.vercel
+.env*

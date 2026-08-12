@@ -27,10 +27,14 @@ const userSchema = new mongoose.Schema(
       enum: ["email", "google"],
       default: "email",
     },
-    // Google's stable account id (the `sub` claim). Sparse so email users can all be null.
+    // Google's stable account id (the `sub` claim).
+    //
+    // NO `default: null` here on purpose. A sparse unique index only skips
+    // documents where the field is ABSENT — an explicit null still counts as a
+    // value, so defaulting to null would make every email signup collide with
+    // the previous one on googleId. Email accounts simply omit the field.
     googleId: {
       type: String,
-      default: null,
       unique: true,
       sparse: true,
     },

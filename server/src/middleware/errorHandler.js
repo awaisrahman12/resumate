@@ -20,9 +20,18 @@ export function errorHandler(err, _req, res, _next) {
     return res.status(400).json({ error: messages.join(" ") });
   }
 
-  // Duplicate key (e.g. email already registered)
+  // Duplicate key. Don't assume it was the email — reporting the wrong field
+  // sends people hunting for an account that doesn't exist.
   if (err.code === 11000) {
-    return res.status(409).json({ error: "An account with that email already exists." });
+    const field = Object.keys(err.keyPattern || err.keyValue || {})[0];
+    if (field === "email") {
+      return res.status(409).json({ error: "An account with that email already exists." });
+    }
+    if (field === "googleId") {
+      return res.status(409).json({ error: "That Google account is already linked to another user." });
+    }
+    console.error("Unexpected duplicate key on", field, err.keyValue);
+    return res.status(409).json({ error: "That value is already in use." });
   }
 
   // Errors we tagged with an explicit status (PdfOnlyError, ApiError, etc.)

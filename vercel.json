@@ -14,7 +14,9 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "server/api/index.js" },
+    { "src": "/assets/(.*)", "dest": "/client/assets/$1" },
     { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/(.*\\.[a-zA-Z0-9]+)$", "dest": "/client/$1" },
+    { "src": "/(.*)", "dest": "/client/index.html" }
   ]
 }
